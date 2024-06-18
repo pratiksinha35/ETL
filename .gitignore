@@ -1,1 +1,3 @@
 dbt-venv/
+custom_postgres/
+logs/
