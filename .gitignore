@@ -2,3 +2,4 @@ venv/
 custom_postgres/
 logs/
 airflow/
+docker-compose.yaml
