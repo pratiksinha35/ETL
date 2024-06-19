@@ -35,7 +35,7 @@ services:
       - destination_postgres
 
   dbt:
-    image: ghcr.io/dbt-labs/dbt-postgres:1.0.0
+    image: ghcr.io/dbt-labs/dbt-postgres:1.4.7
     command:
       [
         "run",
