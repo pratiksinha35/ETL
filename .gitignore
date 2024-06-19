@@ -1,4 +1,4 @@
-dbt-venv/
+venv/
 custom_postgres/
 logs/
 airflow/
