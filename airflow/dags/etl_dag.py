@@ -1,9 +1,12 @@
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
 from airflow.providers.docker.operators.docker import DockerOperator
+from airflow.utils.dates import days_ago
+from airflow.providers.airbyte.operators.airbyte import AirbyteTriggerSyncOperator
 from docker.types import Mount
 import subprocess
+
+CONN_ID = ''
 
 default_args = {
     'owner': 'airflow',
@@ -12,24 +15,22 @@ default_args = {
     'email_on_retry': False,
 }
 
-def run_etl_script(script_path="/opt/airflow/etl/etl_script.py"):
-    result = subprocess.run(["python", script_path], capture_output=True, text=True)
-    if result.returncode != 0:
-        raise Exception(f'Script failed with error: {result.stderr}')
-    else:
-        print(result.stdout)
 
 dag = DAG(
     'etl_and_dbt',
     default_args=default_args,
     description='An ETL workflow with dbt',
-    start_date=datetime(2024, 6, 20),
+    start_date=datetime(2024, 6, 22),
     catchup=False
 )
 
-task_1 = PythonOperator(
-    task_id="run_etl_script",
-    python_callable=run_etl_script,
+task_1 = AirbyteTriggerSyncOperator(
+    task_id="airbyte_postgres_postgres",
+    airbyte_conn_id='airbyte',
+    connection_id=CONN_ID,
+    asynchronous=False,
+    timeout=3600,
+    wait=3,
     dag=dag
 )
 
