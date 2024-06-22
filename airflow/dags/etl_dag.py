@@ -20,7 +20,7 @@ dag = DAG(
     'etl_and_dbt',
     default_args=default_args,
     description='An ETL workflow with dbt',
-    start_date=datetime(2024, 6, 20),
+    start_date=datetime(2024, 6, 22),
     catchup=False
 )
 
